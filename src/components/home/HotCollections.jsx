@@ -131,36 +131,38 @@ const HotCollections = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          <Slider
-            ref={sliderRef}
-            {...simpleSliderSettings()}
-            className="hot_collections-slider"
-          >
-            {isLoading
-              ? new Array(SKELETON_CARD_COUNT)
-                  .fill(0)
-                  .map((_, index) => renderSkeletonLoader(index))
-              : hotCollectionsData.map((collection, index) => {
-                  return renderHotCollections(collection, index);
-                })}
-          </Slider>
-          <div className="btn_container">
-            <button
-              className="slider_btn"
-              type="button"
-              aria-label="Previous hot collection"
-              onClick={() => sliderNav("previous")}
+          <div className="hot_collections--wrapper">
+            <Slider
+              ref={sliderRef}
+              {...simpleSliderSettings()}
+              className="hot_collections-slider"
             >
-              <i className="fa fa-chevron-left"></i>
-            </button>
-            <button
-              className="slider_btn"
-              type="button"
-              aria-label="Next hot collection"
-              onClick={() => sliderNav("next")}
-            >
-              <i className="fa fa-chevron-right"></i>
-            </button>
+              {isLoading
+                ? new Array(SKELETON_CARD_COUNT)
+                    .fill(0)
+                    .map((_, index) => renderSkeletonLoader(index))
+                : hotCollectionsData.map((collection, index) => {
+                    return renderHotCollections(collection, index);
+                  })}
+            </Slider>
+            <div className="btn_container">
+              <button
+                className="slider_btn"
+                type="button"
+                aria-label="Previous hot collection"
+                onClick={() => sliderNav("previous")}
+              >
+                <i className="fa fa-chevron-left"></i>
+              </button>
+              <button
+                className="slider_btn"
+                type="button"
+                aria-label="Next hot collection"
+                onClick={() => sliderNav("next")}
+              >
+                <i className="fa fa-chevron-right"></i>
+              </button>
+            </div>
           </div>
 
           {/* {new Array(4).fill(0).map((_, index) => (

@@ -1,21 +1,19 @@
-
-
+.hot_collections--wapper {
+  position: absolute;
+  width: 100%;
+  /* display: flex; */
+}
 /* ----------------------------------------------- */
 /* Arrow Buttons */
 /* ----------------------------------------------- */
 
 .btn_container {
-  position: absolute;
-  top: 55%;
-  width: 89.5%;
-  margin-top: 34px;
-  margin-left:-30px;
+  position: relative;
+  top: -50%;
+  left: -2%;
+  width: 104%;
   display: flex;
-  align-items: center;
-  justify-content: center;
   justify-content: space-between;
-  gap: 18px;
-  
 }
 
 .slider_btn {
