@@ -146,7 +146,7 @@ const HotCollections = () => {
           </Slider>
           <div className="btn_container">
             <button
-              className="slider"
+              className="slider_btn"
               type="button"
               aria-label="Previous hot collection"
               onClick={() => sliderNav("previous")}
@@ -154,7 +154,7 @@ const HotCollections = () => {
               <i className="fa fa-chevron-left"></i>
             </button>
             <button
-              className="slider"
+              className="slider_btn"
               type="button"
               aria-label="Next hot collection"
               onClick={() => sliderNav("next")}
