@@ -9,6 +9,7 @@ import "./HotCollections.css";
 const SKELETON_CARD_COUNT = 4;
 
 const HotCollections = () => {
+
   const sliderRef = useRef(null);
   const { id } = useParams();
   const [hotCollectionsData, setHotCollectionsData] = useState([]);
@@ -19,11 +20,12 @@ const HotCollections = () => {
       const { data } = await axios.get(
         `https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections?slug=${id}`,
       );
-
       setHotCollectionsData(data);
-    } catch (error) {
+    }
+    catch (error) {
       console.error("Error fetching hotCollectionsData:", error);
-    } finally {
+    }
+    finally {
       setIsLoading(false);
     }
   }, [id]);
@@ -123,7 +125,7 @@ const HotCollections = () => {
     }
   }
 
-  
+
   return (
     <section id="section-collections" className="no-bottom">
       <div className="container">
