@@ -32,6 +32,7 @@ const HotCollections = () => {
     getData();
   }, [getData]);
 
+
   function renderHotCollections(collection, index) {
     return (
       <div className="hot_collections-slider" key={index}>
@@ -79,6 +80,7 @@ const HotCollections = () => {
     );
   }
 
+
   function simpleSliderSettings() {
     const settings = {
       dots: true,
@@ -121,6 +123,7 @@ const HotCollections = () => {
     }
   }
 
+  
   return (
     <section id="section-collections" className="no-bottom">
       <div className="container">
