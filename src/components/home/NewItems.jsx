@@ -52,9 +52,7 @@ const NewItems = () => {
   }
 
   function sliderBtn(event) {
-    if () {
-      slick.Prev
-    }
+   console.log("works")
   }
   
     
