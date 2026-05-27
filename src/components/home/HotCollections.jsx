@@ -9,7 +9,7 @@ import "./HotCollections.css";
 const SKELETON_CARD_COUNT = 4;
 
 const HotCollections = () => {
-
+// new push to hotcollection branch
   const sliderRef = useRef(null);
   const { id } = useParams();
   const [hotCollectionsData, setHotCollectionsData] = useState([]);
