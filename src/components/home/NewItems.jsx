@@ -1,9 +1,33 @@
-import React from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 
 const NewItems = () => {
+
+  const [newItemsData, setNewItemsData] = useState([]);
+
+  const getNewItemsData = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems"
+      );
+      setNewItemsData(data);
+    } catch (error) {
+      console.log("Error fetching newItemsData", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getNewItemsData();
+  }, [getNewItemsData]);
+
+  const itemsToRender = newItemsData.length ? newItemsData.slice(0, 4) : new Array(4).fill(null);
+
+  
+
+
   return (
     <section id="section-items" className="no-bottom">
       <div className="container">
@@ -14,7 +38,7 @@ const NewItems = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          {new Array(4).fill(0).map((_, index) => (
+          {itemsToRender.map((_, index) => (
             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
               <div className="nft__item">
                 <div className="author_list_pp">
