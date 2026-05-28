@@ -51,11 +51,15 @@ const NewItems = () => {
     return settings;
   }
 
-  function sliderBtn(event) {
-   console.log("works")
+  function sliderBtn(direction) {
+    if (direction === "previous") {
+      sliderRef.current?.slickPrev();
+    } else if (direction === "next") {
+      sliderRef.current?.slickNext();
+    }
   }
   
-    
+  
 
   function dynamicRenderingOfNewItemsData(item, index) {
     return (
@@ -141,8 +145,21 @@ const NewItems = () => {
           </Slider>
           </div>
           <div className="button__container">
-          <button className="bttn btn__left " onClick={sliderBtn}> <i className="fa fa-chevron-left"></i> </button>
-          <button className="bttn btn__right " onClick={sliderBtn}> <i className="fa fa-chevron-right"></i>  </button>
+            <button 
+              className="bttn btn__left " 
+              onClick={() => sliderBtn("previous")}>
+
+             <i className="fa fa-chevron-left"></i> 
+
+            </button>
+
+            <button 
+              className="bttn btn__right " 
+              onClick={() => sliderBtn("next")}>
+
+              <i className="fa fa-chevron-right"></i>
+                
+            </button>
           </div>
         </div>
       </div>
