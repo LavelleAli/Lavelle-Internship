@@ -6,9 +6,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./NewItems.css";
 
+
+
 const NewItems = () => {
   const [newItemsData, setNewItemsData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
+
 
   const getNewItemsData = useCallback(async () => {
     try {
@@ -16,8 +20,12 @@ const NewItems = () => {
         "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems",
       );
       setNewItemsData(data);
-    } catch (error) {
+    }
+    catch (error) {
       console.log("Error fetching newItemsData", error);
+    }
+    finally {
+      setLoading(false);
     }
   }, []);
 
@@ -25,39 +33,17 @@ const NewItems = () => {
     getNewItemsData();
   }, [getNewItemsData]);
 
-  // const itemsToRender = newItemsData.length
-  //   ? newItemsData.slice(0, 4)
-  //   : new Array(4).fill(null);
 
-  function sliderSettings() {
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-    };
-
-    return settings;
-  }
-
-  function sliderBtn(direction) {
-    if (direction === "previous") {
-      sliderRef.current?.slickPrev();
-    } else if (direction === "next") {
-      sliderRef.current?.slickNext();
-    }
-  }
 
   function dynamicRenderingOfNewItemsData(item, index) {
     return (
-      <div className="nft__item" key={index}>
+      <div className="nft__item" key={item.nftId}>
         <div className="author_list_pp">
           <Link
             to={`/author/${item.authorId}`}
             data-bs-toggle="tooltip"
             data-bs-placement="top"
-            title="Creator: Monica Lucas"
+            title="Creator: {item.authorId}"
           >
             <img className="lazy" src={item.authorImage} alt="" />
             <i className="fa fa-check"></i>
@@ -66,24 +52,6 @@ const NewItems = () => {
         {item.expiryDate && <CountdownTimer expiryDate={item.expiryDate} />}
 
         <div className="nft__item_wrap">
-          <div className="nft__item_extra">
-            <div className="nft__item_buttons">
-              <button>Buy Now</button>
-              <div className="nft__item_share">
-                <h4>Share</h4>
-                <a href="" target="_blank" rel="noreferrer">
-                  <i className="fa fa-facebook fa-lg"></i>
-                </a>
-                <a href="" target="_blank" rel="noreferrer">
-                  <i className="fa fa-twitter fa-lg"></i>
-                </a>
-                <a href="">
-                  <i className="fa fa-envelope fa-lg"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
           <Link to={`/item-details/${item.nftId}`}>
             <img
               src={item.nftImage}
@@ -106,37 +74,93 @@ const NewItems = () => {
     );
   }
 
+
   function getTimeLeft(expiryDate) {
-    const diff = expiryDate - Date.now();
-    if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
-    return {
-      hours: Math.floor(diff / (1000 * 60 * 60)),
-      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((diff % (1000 * 60)) / 1000),
-    };
-  }
+  const diff = expiryDate - Date.now();
+  if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
+  return {
+    hours: Math.floor(diff / (1000 * 60 * 60)),
+    minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((diff % (1000 * 60)) / 1000),
+  };
+}
 
-  function CountdownTimer({ expiryDate }) {
-    const [timeLeft, setTimeLeft] = useState(getTimeLeft(expiryDate));
+function CountdownTimer({ expiryDate }) {
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(expiryDate));
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setTimeLeft(getTimeLeft(expiryDate));
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [expiryDate]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(getTimeLeft(expiryDate));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [expiryDate]);
 
-    const { hours, minutes, seconds } = timeLeft;
+  const { hours, minutes, seconds } = timeLeft;
+  return (
+    <div className="de_countdown">
+      {String(hours).padStart(2, "0")}h &nbsp;
+      {String(minutes).padStart(2, "0")}m &nbsp;
+      {String(seconds).padStart(2, "0")}s
+    </div>
+  );
+}
+
+
+  function SkeletonCards() {
     return (
-      <div className="de_countdown">
-        {String(hours).padStart(2, "0")}h &nbsp;
-        {String(minutes).padStart(2, "0")}m &nbsp;
-        {String(seconds).padStart(2, "0")}s
+      <div className="nft__item">
+        <div className="author_list_pp">
+          <div className="newItemSkeleton skeleton-avatar"></div>
+        </div>
+
+        <div className="nft__item_wrap">
+          <div className="newItemSkeleton skeleton-img"></div>
+        </div>
+
+        <div className="nft__item_info">
+          <div className="newItemSkeleton skeleton-title"></div>
+          <div className="newItemSkeleton skeleton-text"></div>
+        </div>
       </div>
     );
   }
 
-  
+
+    function sliderSettings() {
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      responsive: [
+        {
+          breakpoint: 1199,
+          settings: { slidesToShow: 3, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 991,
+          settings: { slidesToShow: 2, slidesToScroll: 1 },
+        },
+        {
+          breakpoint: 575,
+          settings: { slidesToShow: 1, slidesToScroll: 1 },
+        },
+      ],
+    };
+    return settings;
+  }
+
+  function sliderBtn(direction) {
+    if (direction === "previous") {
+      sliderRef.current?.slickPrev();
+    } else if (direction === "next") {
+      sliderRef.current?.slickNext();
+    }
+  }
+
+
+
   return (
     <section id="section-items" className="no-bottom">
       <div className="container">
@@ -153,9 +177,15 @@ const NewItems = () => {
               {...sliderSettings()}
               className="newItems__Slider"
             >
-              {newItemsData.map((items, index) =>
-                dynamicRenderingOfNewItemsData(items, index),
-              )}
+
+              {loading
+              ? new Array(4).fill(0).map((_, index) => (
+                  <SkeletonCards key={index} />
+              ))
+              : newItemsData.map((items, index) =>
+                  dynamicRenderingOfNewItemsData(items, index),
+                )}
+
             </Slider>
           </div>
           <div className="button__container">
