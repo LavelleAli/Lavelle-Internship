@@ -6,7 +6,7 @@ import nftImage from "../../images/nftImage.jpg";
 
 const HotCollections = () => {
 
-    const [newItemsData, setNewItemsData] = useState([])
+  const [newItemsData, setNewItemsData] = useState([])
   const { id } = useParams();
 
   const getNewItemsData = useCallback( async () => {

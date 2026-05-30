@@ -1,20 +1,24 @@
 
+.row {
+    position: relative;
+}
 
 .button__container {
    position: absolute;
-   top: 55%;
-   left: 7%;
-   width: 86%;
-   /* height: 50px; */
+   padding: 0px;
+   bottom: 40%;
+   left: 0;
+   width: 100%;
    display: flex;
    justify-content: space-between;
+   
 }
 
 .bttn {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     padding: 10px;
-    background-color: #ffffff74;
+    background-color: #ffffff;
     border: none;
     border-radius: 50%;
     display: flex;
@@ -23,3 +27,11 @@
     font-size: 14px;
 }
 
+.de_countdown {
+    display: flex;
+    gap: 4px;
+}
+
+.de_countdown.bg-color-secondary {
+  border: none;
+}
