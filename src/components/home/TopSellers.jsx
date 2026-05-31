@@ -58,6 +58,7 @@ function skeletonLoader() {
         <Link to="/author">
           <img
             className="skeleton skeleton-img"
+            alt=""
           />
           <i className="fa fa-check"></i>
         </Link>
