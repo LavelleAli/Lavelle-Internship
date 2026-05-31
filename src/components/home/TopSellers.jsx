@@ -1,8 +1,36 @@
-import React from "react";
+import {useCallback, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"
 import AuthorImage from "../../images/author_thumbnail.jpg";
 
 const TopSellers = () => {
+
+const [topSellersData, setTopSellersData] = useState([]);
+const [loading, setLoading] = useState(true);
+
+
+const getTopsellersData = useCallback(async () => {
+  try {
+    const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers`);
+
+    setTopSellersData( data );
+    console.log(topSellersData)
+  }
+  catch (error) {
+    console.log("Error fetching topSellersData", error)
+  }
+})
+
+useEffect(() => {
+ { getTopsellersData()};
+}, [])
+
+
+
+
+
+
+
   return (
     <section id="section-popular" className="pb-5">
       <div className="container">
