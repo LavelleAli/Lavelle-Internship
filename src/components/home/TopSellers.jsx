@@ -2,6 +2,7 @@ import {useCallback, useState, useEffect} from "react";
 import { Link } from "react-router-dom";
 import axios from "axios"
 import AuthorImage from "../../images/author_thumbnail.jpg";
+import "./TopSellers.css";
 
 const TopSellers = () => {
 
@@ -9,7 +10,7 @@ const [topSellersData, setTopSellersData] = useState([]);
 const [loading, setLoading] = useState(true);
 
 
-const getTopsellersData = useCallback(async () => {
+const getTopSellersData = useCallback(async () => {
   try {
     const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers`);
 
@@ -19,44 +20,55 @@ const getTopsellersData = useCallback(async () => {
   catch (error) {
     console.log("Error fetching topSellersData", error)
   }
+  finally {
+    setLoading(false)
+  }
 })
 
 useEffect(() => {
- { getTopsellersData()};
+ { getTopSellersData()};
 }, [])
 
 function renderTopSellersData(item, id) {
   return (
-    <div className="col-md-12">
-      <ol className="author_list">
-        {new Array(12).fill(0).map((_, index) => (
-          <li key={index}>
-            <div className="author_list_pp">
-              <Link to="/author">
-                <img
-                  className="lazy pp-author"
-                  src={AuthorImage}
-                  alt=""
-                />
-                <i className="fa fa-check"></i>
-              </Link>
-            </div>
-            <div className="author_list_info">
-              <Link to="/author">Monica Lucas</Link>
-              <span>2.1 ETH</span>
-            </div>
-          </li>
-        ))}
-      </ol>
-    </div>
-
+    <li key={item.id}>
+      <div className="author_list_pp">
+        <Link to={`/author/${item.authorId}`}>
+          <img
+            className="lazy pp-author"
+            src={item.authorImage}
+            alt=""
+          />
+          <i className="fa fa-check"></i>
+        </Link>
+      </div>
+      <div className="author_list_info">
+        <Link to={`/author/${item.authorId}`}>{item.authorName}</Link>
+        <span>{item.price} ETH</span>
+      </div>
+    </li>
   )
-
-
 }
 
 
-
+function skeletonLoader() {
+  return (
+    <li>
+      <div className="skeleton skeleton-author_list_pp">
+        <Link to="/author">
+          <img
+            className="skeleton skeleton-img"
+          />
+          <i className="fa fa-check"></i>
+        </Link>
+      </div>
+      <div className="skeleton skeleton-author_list_info">
+        <Link to="/author">{}</Link>
+        <span className="skeleton skeleton-price"></span>
+      </div>
+    </li>
+  )
+}
 
 
   return (
@@ -69,32 +81,11 @@ function renderTopSellersData(item, id) {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          {/* {getTopsellersData.map((item, id) => renderTopSellersData())} */}
-
-
-
-          {/* <div className="col-md-12">
+          <div className="col-md-12">
             <ol className="author_list">
-              {new Array(12).fill(0).map((_, index) => (
-                <li key={index}>
-                  <div className="author_list_pp">
-                    <Link to="/author">
-                      <img
-                        className="lazy pp-author"
-                        src={AuthorImage}
-                        alt=""
-                      />
-                      <i className="fa fa-check"></i>
-                    </Link>
-                  </div>
-                  <div className="author_list_info">
-                    <Link to="/author">Monica Lucas</Link>
-                    <span>2.1 ETH</span>
-                  </div>
-                </li>
-              ))}
+              {loading ? new Array(12).fill(0).map((_, id) => skeletonLoader()) : topSellersData.map((item, id) => renderTopSellersData(item, id))}
             </ol>
-          </div> */}
+          </div>
         </div>
       </div>
     </section>
