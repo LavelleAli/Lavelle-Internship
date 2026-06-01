@@ -1,26 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
-import {Link, useParams} from "react-router-dom";
-import axios from "axios";
+import React, { useEffect } from "react";
 import SubHeader from "../images/subheader.jpg";
 import ExploreItems from "../components/explore/ExploreItems";
 
 const Explore = () => {
-
-
-
-function renderExploreItemsData() {
-  return (
-     <section aria-label="section">
-          <div className="container">
-            <div className="row">
-              <ExploreItems />
-            </div>
-          </div>
-        </section>
-        );
-}
-
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
