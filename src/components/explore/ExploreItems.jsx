@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./ExploreItems.css"
 
@@ -7,17 +7,24 @@ const ExploreItems = () => {
 
 const [exploreItems, setExploreItems] = useState([]);
 const [addDisplayedItems, setAddDisplayedItems] = useState(8);
+const [isLoading, setIsLoading] = useState(true);
 
 
 const getExploreItems = useCallback( async () => {
   try {
     const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`);
     setExploreItems(data);
-    console.log(data);
-  } catch (error) {
+  } 
+  catch (error) {
     console.log("Error fetching Explore Items Data:", error);
   }
+  finally {
+    setIsLoading(false);
+  }
 });
+
+
+
 
 useEffect(() => {
   getExploreItems();
@@ -62,7 +69,25 @@ function renderExploreItemsData(explore, id ) {
           </div>
         </div>
   )
-}
+};
+
+
+function skeletonLoader(key) {
+  return (
+    <div key={key} className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12" style={{ display: "block", backgroundSize: "cover" }}>
+      <div className="nft__item">
+        <div className="skeleton skeleton__author_list_pp" />
+        <div className="skeleton skeleton__img" />
+        <div className="nft__item_info">
+          <div className="skeleton skeleton__title" />
+          <div className="skeleton skeleton__price" />
+        </div>
+      </div>
+    </div>
+  )
+};
+
+
 
 function getTimeLeft(expiryDate) {
   const diff = expiryDate - Date.now();
@@ -72,7 +97,7 @@ function getTimeLeft(expiryDate) {
     minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
     seconds: Math.floor((diff % (1000 * 60)) / 1000),
   };
-}
+};
 
 function CountdownTimer({ expiryDate }) {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(expiryDate));
@@ -92,24 +117,62 @@ function CountdownTimer({ expiryDate }) {
       {String(seconds).padStart(2, "0")}s
     </div>
   );
-}
+};
 
 
 function loadMoreItems() {
   setAddDisplayedItems(prev => prev + 4);
-}
+};
+
+
+async function handleFilterChange(event) {
+
+  const {data} = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`);
+  
+
+
+  const filterValue = event.target.value;
+  let sortedItems = [...exploreItems];
+
+  if (filterValue === "price_low_to_high") {
+    const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore?filter=price_low_to_high`);
+    sortedItems = data;
+  } 
+  else if (filterValue === "price_high_to_low") {
+    const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore?filter=price_high_to_low`);
+    sortedItems = data;
+  } 
+  else if (filterValue === "likes_high_to_low") {
+    const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore?filter=likes_high_to_low`);
+    sortedItems = data;
+  }
+  else if (filterValue === "") {
+    getExploreItems();
+  };
+
+  setExploreItems(sortedItems);
+};
+
+
+
+
+
 
   return (
     <>
       <div>
-        <select id="filter-items" defaultValue="">
+        <select id="filter-items" defaultValue="" onChange={handleFilterChange}>
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-      {exploreItems.slice(0, addDisplayedItems).map((explore, index) => renderExploreItemsData(explore, index)) }
+
+
+      {isLoading
+        ? Array(8).fill(null).map((_, index) => skeletonLoader(index))
+        : exploreItems.slice(0, addDisplayedItems).map((explore, index) => renderExploreItemsData(explore, index))}
 
       <div className="col-md-12 text-center">
         <button id="loadmore" className="btn-main lead" onClick={loadMoreItems}>
