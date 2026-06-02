@@ -6,6 +6,7 @@ import "./ExploreItems.css"
 const ExploreItems = () => {
 
 const [exploreItems, setExploreItems] = useState([]);
+const [addDisplayedItems, setAddDisplayedItems] = useState(8);
 
 
 const getExploreItems = useCallback( async () => {
@@ -93,6 +94,11 @@ function CountdownTimer({ expiryDate }) {
   );
 }
 
+
+function loadMoreItems() {
+  setAddDisplayedItems(prev => prev + 4);
+}
+
   return (
     <>
       <div>
@@ -103,12 +109,12 @@ function CountdownTimer({ expiryDate }) {
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-      {exploreItems.slice(0, 8).map((explore, index) => renderExploreItemsData(explore, index)) }
+      {exploreItems.slice(0, addDisplayedItems).map((explore, index) => renderExploreItemsData(explore, index)) }
 
       <div className="col-md-12 text-center">
-        <Link to="" id="loadmore" className="btn-main lead">
+        <button id="loadmore" className="btn-main lead" onClick={loadMoreItems}>
           Load more
-        </Link>
+        </button>
       </div>
     </>
   );

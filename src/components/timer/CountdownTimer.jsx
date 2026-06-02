@@ -16,6 +16,10 @@ const CountdownTimer = () => {
     }
   });
 
+  useEffect (() => {
+    getDataFromApi();
+  },[getDataFromApi]);
+
   function getTimeLeft(expiryDate) {
     const diff = expiryDate - Date.now();
     if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
