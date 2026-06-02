@@ -23,9 +23,6 @@ const getExploreItems = useCallback( async () => {
   }
 });
 
-
-
-
 useEffect(() => {
   getExploreItems();
 }, []);
@@ -126,11 +123,6 @@ function loadMoreItems() {
 
 
 async function handleFilterChange(event) {
-
-  const {data} = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`);
-  
-
-
   const filterValue = event.target.value;
   let sortedItems = [...exploreItems];
 
@@ -155,9 +147,6 @@ async function handleFilterChange(event) {
 
 
 
-
-
-
   return (
     <>
       <div>
@@ -172,7 +161,8 @@ async function handleFilterChange(event) {
 
       {isLoading
         ? Array(8).fill(null).map((_, index) => skeletonLoader(index))
-        : exploreItems.slice(0, addDisplayedItems).map((explore, index) => renderExploreItemsData(explore, index))}
+        : exploreItems.slice(0, addDisplayedItems).map((explore, index) => renderExploreItemsData(explore, index)
+      )};
 
       <div className="col-md-12 text-center">
         <button id="loadmore" className="btn-main lead" onClick={loadMoreItems}>
