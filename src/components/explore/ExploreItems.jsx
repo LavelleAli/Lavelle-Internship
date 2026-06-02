@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import AuthorImage from "../../images/author_thumbnail.jpg";
-import nftImage from "../../images/nftImage.jpg";
-
+import "./ExploreItems.css"
 
 const ExploreItems = () => {
 
 const [exploreItems, setExploreItems] = useState([]);
+
 
 const getExploreItems = useCallback( async () => {
   try {
@@ -42,7 +41,7 @@ function renderExploreItemsData(explore, id ) {
                 <i className="fa fa-check"></i>
               </Link>
             </div>
-            <div className="de_countdown">5h 30m 32s</div>
+            {explore.expiryDate && <CountdownTimer expiryDate={explore.expiryDate} />}
 
             <div className="nft__item_wrap">
               <Link to="/item-details">
