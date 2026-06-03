@@ -1,14 +1,53 @@
-import React from "react";
+import { useState, useEffect, useCallback} from "react";
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
-import { Link } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
 
+
 const Author = () => {
+  const { id } = useParams();
+  const [authorData, setAuthorData] = useState();
+  const [loading, setLoading] = useState(true);
+
+
+
+  const fetchAuthorData = useCallback(async () => {
+    try {
+      const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=73855012`);
+      setAuthorData([data]);
+      console.log(data);
+    } 
+    catch (error) {
+      console.error("Error fetching author data:", error);
+    }
+    finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    fetchAuthorData();
+  }, [fetchAuthorData]);
+
+
+  function renderAuthorItems(item, id) {
+    return (
+      <div key={id}>
+        <h4>{item.name}</h4>
+        <p>{item.bio}</p>
+      </div>
+    );
+  }
+
+
+
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
+
 
         <section
           id="profile_banner"
