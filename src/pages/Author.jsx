@@ -6,7 +6,7 @@ import AuthorItems from "../components/author/AuthorItems";
 import AuthorImage from "../images/author_thumbnail.jpg";
 
 
-const Author = () => {
+const Author = (item) => {
   const { id } = useParams();
   const [authorData, setAuthorData] = useState();
   const [loading, setLoading] = useState(true);
@@ -15,8 +15,8 @@ const Author = () => {
 
   const fetchAuthorData = useCallback(async () => {
     try {
-      const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=73855012`);
-      setAuthorData([data]);
+      const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`);
+      setAuthorData(data);
       console.log(data);
     } 
     catch (error) {
@@ -32,14 +32,11 @@ const Author = () => {
   }, [fetchAuthorData]);
 
 
-  function renderAuthorItems(item, id) {
-    return (
-      <div key={id}>
-        <h4>{item.name}</h4>
-        <p>{item.bio}</p>
-      </div>
-    );
-  }
+  // function renderAuthorItems(item, id) {
+  //   return (
+     
+  //   );
+  // }
 
 
 
@@ -64,7 +61,7 @@ const Author = () => {
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
-                      <img src={AuthorImage} alt="" />
+                      <img src={item.authorImage} alt="" />
 
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
