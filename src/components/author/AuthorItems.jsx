@@ -1,12 +1,33 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import "./AuthorItems.css";
 
-const AuthorItems = ({ nftCollection = [], authorImage, authorId }) => {
+const AuthorItems = ({ nftCollection = [], authorImage, authorId, loading }) => {
+  function skeletonCards() {
+    return new Array(8).fill(0).map((_, index) => (
+      <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
+        <div className="nft__item">
+          <div className="author_list_pp">
+            <div className="nft-skeleton-author-avatar"></div>
+          </div>
+          <div className="nft__item_wrap">
+            <div className="nft-skeleton-image"></div>
+          </div>
+          <div className="nft__item_info">
+            <div className="nft-skeleton-title"></div>
+            <div className="nft-skeleton-price"></div>
+            <div className="nft-skeleton-likes"></div>
+          </div>
+        </div>
+      </div>
+    ));
+  }
+
   return (
     <div className="de_tab_content">
       <div className="tab-1">
         <div className="row">
-          {nftCollection.map((nft, index) => (
+          {loading ? skeletonCards() : nftCollection.map((nft, index) => (
             <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
               <div className="nft__item">
                 <div className="author_list_pp">

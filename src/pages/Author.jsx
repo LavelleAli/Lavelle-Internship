@@ -3,12 +3,14 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
+import "./Author.css";
 
-const Author = (item) => {
+const Author = () => {
   const { id } = useParams();
   const [authorData, setAuthorData] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [followers, setFollowers] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   const fetchAuthorData = useCallback(async () => {
     try {
@@ -16,7 +18,7 @@ const Author = (item) => {
         `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=73855012`,
       );
       setAuthorData(data);
-      console.log(data);
+      setFollowers(data.followers);
     } catch (error) {
       console.error("Error fetching author data:", error);
     } finally {
@@ -28,7 +30,15 @@ const Author = (item) => {
     fetchAuthorData();
   }, [fetchAuthorData]);
 
-  function renderAuthorItems(item, id) {
+
+  
+  function followerCount() {
+    setIsFollowing(prev => !prev);
+    setFollowers(prev => isFollowing ? prev - 1 : prev + 1)
+  }
+
+
+  function renderAuthorItems(item) {
     return (
       <div className="col-md-12" key={id}>
         <div className="d_profile de-flex">
@@ -40,9 +50,9 @@ const Author = (item) => {
               <div className="profile_name">
                 <h4>
                   {item?.authorName}
-                  <span className="profile_username">@{item.authorName}</span>
+                  <span className="profile_username">@{item?.authorName}</span>
                   <span id="wallet" className="profile_wallet">
-                    {item.address}
+                    {item?.address}
                   </span>
                   <button id="btn_copy" title="Copy Text">
                     Copy
@@ -53,9 +63,9 @@ const Author = (item) => {
           </div>
           <div className="profile_follow de-flex">
             <div className="de-flex-col">
-              <div className="profile_follower">{item.followers} followers</div>
-              <Link to="#" className="btn-main">
-                Follow
+              <div className="profile_follower">{followers} followers</div>
+              <Link to="#" className="btn-main" onClick={followerCount}>
+                {isFollowing ? "Unfollow" : "Follow"}
               </Link>
             </div>
           </div>
@@ -64,31 +74,39 @@ const Author = (item) => {
     );
   }
 
+
   function skeletonLoader() {
     return (
       <div className="col-md-12">
         <div className="d_profile de-flex">
           <div className="de-flex-col">
             <div className="profile_avatar">
+              <div className="author-skeleton-avatar"></div>
+              <i className="fa fa-check"></i>
               <div className="profile_name">
                 <h4>
-                  <span className="profile_username"></span>
-                  <span id="wallet" className="profile_wallet"></span>
-                  <button id="btn_copy" title="Copy Text"></button>
+                  <div className="author-skeleton-name"></div>
+                  <span className="author-skeleton-username"></span>
+                  <span className="author-skeleton-wallet"></span>
+                  <div className="author-skeleton-copy-btn"></div>
                 </h4>
               </div>
             </div>
           </div>
           <div className="profile_follow de-flex">
             <div className="de-flex-col">
-              <div className="profile_follower"></div>
-              <Link to="#" className="btn-main"></Link>
+              <div className="author-skeleton-followers"></div>
+              <div className="author-skeleton-follow-btn"></div>
             </div>
           </div>
         </div>
       </div>
     );
   }
+
+
+  
+
 
   return (
     <div id="wrapper">
@@ -100,15 +118,15 @@ const Author = (item) => {
           aria-label="section"
           className="text-light"
           data-bgimage="url(images/author_banner.jpg) top"
-          style={{ background: `url(${authorData?.authorImage}) top` }}
+          style={{ background: `url(${AuthorBanner}) top` }}
         ></section>
 
         <section aria-label="section">
           <div className="container">
             <div className="row">
-              {loading 
-              ? skeletonLoader()
-              : authorData && renderAuthorItems(authorData)}
+              {loading
+                ? skeletonLoader()
+                : authorData && renderAuthorItems(authorData)}
 
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
@@ -116,6 +134,7 @@ const Author = (item) => {
                     nftCollection={authorData?.nftCollection}
                     authorImage={authorData?.authorImage}
                     authorId={authorData?.authorId}
+                    loading={loading}
                   />
                 </div>
               </div>
