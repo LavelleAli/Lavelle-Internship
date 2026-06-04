@@ -1,9 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 
-const ExploreItems = () => {
+const ExploreItems = ( {itemDetails = nftId}) => {
+
+
+const { id } = useParams()
+
   return (
     <>
       <div>
@@ -51,7 +55,7 @@ const ExploreItems = () => {
                   </div>
                 </div>
               </div>
-              <Link to="/item-details">
+              <Link to={`/item-details/${item?.nftId}`}>
                 <img src={nftImage} className="lazy nft__item_preview" alt="" />
               </Link>
             </div>
