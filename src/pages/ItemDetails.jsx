@@ -2,40 +2,70 @@ import { useEffect, useState, useCallback } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import EthImage from "../images/ethereum.svg";
-
+import "./ItemDetails.css";
 
 const ItemDetails = () => {
-
-
   const [itemDetails, setItemDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   const fetchItemsData = useCallback(async () => {
     try {
-      const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=17914494`)
-      setItemDetails(data)
-      console.log(data)
-    }
-    catch (error) {
-      console.log("Error fetching API data", error)
-    }
-    finally {
-      setLoading(false)
+      const { data } = await axios.get(
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`,
+      );
+      setItemDetails(data);
+    } catch (error) {
+      console.log("Error fetching API data", error);
+    } finally {
+      setLoading(false);
     }
   }, [id]);
-
-
-function skeletonLoader() {
-
-}
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchItemsData();
   }, [fetchItemsData]);
+
+  if (loading) {
+    return (
+      <div id="wrapper">
+        <div className="no-bottom no-top" id="content">
+          <div id="top"></div>
+          <section aria-label="section" className="mt90 sm-mt-0">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-6 text-center">
+                  <div className="skeleton-box skeleton-image" />
+                </div>
+                <div className="col-md-6">
+                  <div className="item_info">
+                    <div className="skeleton-box skeleton-title" />
+                    <div className="skeleton-counts">
+                      <div className="skeleton-box skeleton-count" />
+                      <div className="skeleton-box skeleton-count" />
+                    </div>
+                    <div className="skeleton-box skeleton-line" />
+                    <div className="skeleton-box skeleton-line" />
+                    <div className="skeleton-box skeleton-line-short" />
+                    <div className="skeleton-author">
+                      <div className="skeleton-box skeleton-avatar" />
+                      <div className="skeleton-box skeleton-name" />
+                    </div>
+                    <div className="skeleton-author-last">
+                      <div className="skeleton-box skeleton-avatar" />
+                      <div className="skeleton-box skeleton-name" />
+                    </div>
+                    <div className="skeleton-box skeleton-price" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div id="wrapper">
@@ -44,8 +74,7 @@ function skeletonLoader() {
         <section aria-label="section" className="mt90 sm-mt-0">
           <div className="container">
             <div className="row">
-              {loading ? skeletonLoader() : null}
-              <div className="col-md-6 text-center" key={id}>
+              <div className="col-md-6 text-center">
                 <img
                   src={itemDetails?.nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
@@ -54,7 +83,9 @@ function skeletonLoader() {
               </div>
               <div className="col-md-6">
                 <div className="item_info">
-                  <h2>{itemDetails?.title} #{itemDetails?.tag}</h2>
+                  <h2>
+                    {itemDetails?.title} #{itemDetails?.tag}
+                  </h2>
 
                   <div className="item_info_counts">
                     <div className="item_info_views">
@@ -66,16 +97,18 @@ function skeletonLoader() {
                       {itemDetails?.likes}
                     </div>
                   </div>
-                  <p>
-                    {itemDetails?.description}
-                  </p>
+                  <p>{itemDetails?.description}</p>
                   <div className="d-flex flex-row">
                     <div className="mr40">
                       <h6>Owner</h6>
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={itemDetails?.ownerImage} alt="" />
+                            <img
+                              className="lazy"
+                              src={itemDetails?.ownerImage}
+                              alt=""
+                            />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
@@ -92,7 +125,11 @@ function skeletonLoader() {
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={itemDetails?.creatorImage} alt="" />
+                            <img
+                              className="lazy"
+                              src={itemDetails?.creatorImage}
+                              alt=""
+                            />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
