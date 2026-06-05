@@ -9,10 +9,10 @@ const ItemDetails = () => {
 
 
   async function getItemData() {
-    const response = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`);
-    setItem(response.data);
+    const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`);
+    setItem(data);
   }
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getItemData();
@@ -34,7 +34,7 @@ const ItemDetails = () => {
               </div>
               <div className="col-md-6">
                 <div className="item_info">
-                  <h2>Rainbow Style #194</h2>
+                  <h2>{item.title}</h2>
 
                   <div className="item_info_counts">
                     <div className="item_info_views">
@@ -57,7 +57,7 @@ const ItemDetails = () => {
                       <div className="item_author">
                         <div className="author_list_pp">
                           <Link to="/author">
-                            <img className="lazy" src={item.ownerImage} alt="" />
+                            <img className="lazy" src={item?.ownerImage} alt="" />
                             <i className="fa fa-check"></i>
                           </Link>
                         </div>
