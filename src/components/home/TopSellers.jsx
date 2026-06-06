@@ -19,11 +19,11 @@ const TopSellers = () => {
     } finally {
       setLoading(false);
     }
-  });
+  }, []);
 
   useEffect(() => {
     getTopSellersData();
-  }, []);
+  }, [getTopSellersData]);
 
   function renderTopSellersData(item, id) {
     return (
