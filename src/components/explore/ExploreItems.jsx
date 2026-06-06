@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./ExploreItems.css"
 
@@ -11,12 +11,11 @@ const [isLoading, setIsLoading] = useState(true);
 
 
 
+
 const getExploreItems = useCallback( async () => {
   try {
     const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`);
     setExploreItems(data);
-    console.log(data)
-    
   } 
   catch (error) {
     console.log("Error fetching Explore Items Data:", error);
@@ -24,11 +23,11 @@ const getExploreItems = useCallback( async () => {
   finally {
     setIsLoading(false);
   }
-});
+},[]);
 
 useEffect(() => {
   getExploreItems();
-}, []);
+}, [getExploreItems]);
 
 
 function renderExploreItemsData(explore, id ) {
@@ -41,7 +40,7 @@ function renderExploreItemsData(explore, id ) {
           <div className="nft__item">
             <div className="author_list_pp">
               <Link
-                to={`/author/${explore?.nftId}`}
+                to={`/author/${explore?.authorId}`}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >

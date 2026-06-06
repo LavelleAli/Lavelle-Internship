@@ -15,7 +15,7 @@ const Author = () => {
   const fetchAuthorData = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=73855012`,
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${id}`,
       );
       setAuthorData(data);
       setFollowers(data.followers);

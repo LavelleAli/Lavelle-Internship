@@ -15,6 +15,7 @@ const ItemDetails = () => {
         `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${id}`,
       );
       setItemDetails(data);
+      console.log(data)
     } catch (error) {
       console.log("Error fetching API data", error);
     } finally {
