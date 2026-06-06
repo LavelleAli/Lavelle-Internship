@@ -9,7 +9,6 @@ import "./HotCollections.css";
 const SKELETON_CARD_COUNT = 4;
 
 const HotCollections = () => {
-
   const sliderRef = useRef(null);
   const { id } = useParams();
   const [hotCollectionsData, setHotCollectionsData] = useState([]);
@@ -21,12 +20,9 @@ const HotCollections = () => {
         `https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections?slug=${id}`,
       );
       setHotCollectionsData(data);
-      console.log(data)
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error fetching hotCollectionsData:", error);
-    }
-    finally {
+    } finally {
       setIsLoading(false);
     }
   }, [id]);
@@ -34,7 +30,6 @@ const HotCollections = () => {
   useEffect(() => {
     getData();
   }, [getData]);
-
 
   function renderHotCollections(collection, index) {
     return (
@@ -83,7 +78,6 @@ const HotCollections = () => {
     );
   }
 
-
   function simpleSliderSettings() {
     const settings = {
       dots: true,
@@ -126,10 +120,8 @@ const HotCollections = () => {
     }
   }
 
-
-
   return (
-    <section id="section-collections" className="no-bottom">
+    <section data-aos="fade-in" data-aos-duration="2000" id="section-collections" className="no-bottom">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">

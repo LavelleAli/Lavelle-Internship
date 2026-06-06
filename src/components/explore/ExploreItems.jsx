@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import "./ExploreItems.css"
 
@@ -10,10 +10,13 @@ const [addDisplayedItems, setAddDisplayedItems] = useState(8);
 const [isLoading, setIsLoading] = useState(true);
 
 
+
 const getExploreItems = useCallback( async () => {
   try {
     const { data } = await axios.get(`https://us-central1-nft-cloud-functions.cloudfunctions.net/explore`);
     setExploreItems(data);
+    console.log(data)
+    
   } 
   catch (error) {
     console.log("Error fetching Explore Items Data:", error);
@@ -38,7 +41,7 @@ function renderExploreItemsData(explore, id ) {
           <div className="nft__item">
             <div className="author_list_pp">
               <Link
-                to={`/author/${id}`}
+                to={`/author/${explore?.nftId}`}
                 data-bs-toggle="tooltip"
                 data-bs-placement="top"
               >
@@ -49,12 +52,12 @@ function renderExploreItemsData(explore, id ) {
             {explore.expiryDate && <CountdownTimer expiryDate={explore.expiryDate} />}
 
             <div className="nft__item_wrap">
-              <Link to="/item-details">
+              <Link to={`/item-details/${explore.nftId}`}>
                 <img src={explore.nftImage} className="lazy nft__item_preview" alt="" />
               </Link>
             </div>
             <div className="nft__item_info">
-              <Link to="/item-details">
+              <Link to={`/item-details/${explore.nftId}`}>
                 <h4>{explore.title}</h4>
               </Link>
               <div className="nft__item_price">{explore.price} ETH</div>

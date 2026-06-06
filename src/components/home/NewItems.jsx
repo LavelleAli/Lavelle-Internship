@@ -11,18 +11,15 @@ const NewItems = () => {
   const [loading, setLoading] = useState(true);
   const sliderRef = useRef(null);
 
-
   const getNewItemsData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         "https://us-central1-nft-cloud-functions.cloudfunctions.net/newItems",
       );
       setNewItemsData(data);
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error fetching newItemsData", error);
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   }, []);
@@ -30,8 +27,6 @@ const NewItems = () => {
   useEffect(() => {
     getNewItemsData();
   }, [getNewItemsData]);
-
-
 
   function dynamicRenderingOfNewItemsData(item, index) {
     return (
@@ -72,37 +67,35 @@ const NewItems = () => {
     );
   }
 
-
   function getTimeLeft(expiryDate) {
-  const diff = expiryDate - Date.now();
-  if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
-  return {
-    hours: Math.floor(diff / (1000 * 60 * 60)),
-    minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-    seconds: Math.floor((diff % (1000 * 60)) / 1000),
-  };
-}
+    const diff = expiryDate - Date.now();
+    if (diff <= 0) return { hours: 0, minutes: 0, seconds: 0 };
+    return {
+      hours: Math.floor(diff / (1000 * 60 * 60)),
+      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((diff % (1000 * 60)) / 1000),
+    };
+  }
 
-function CountdownTimer({ expiryDate }) {
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(expiryDate));
+  function CountdownTimer({ expiryDate }) {
+    const [timeLeft, setTimeLeft] = useState(getTimeLeft(expiryDate));
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft(getTimeLeft(expiryDate));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [expiryDate]);
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setTimeLeft(getTimeLeft(expiryDate));
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [expiryDate]);
 
-  const { hours, minutes, seconds } = timeLeft;
-  return (
-    <div className="de_countdown">
-      {String(hours).padStart(2, "0")}h &nbsp;
-      {String(minutes).padStart(2, "0")}m &nbsp;
-      {String(seconds).padStart(2, "0")}s
-    </div>
-  );
-}
-
+    const { hours, minutes, seconds } = timeLeft;
+    return (
+      <div className="de_countdown">
+        {String(hours).padStart(2, "0")}h &nbsp;
+        {String(minutes).padStart(2, "0")}m &nbsp;
+        {String(seconds).padStart(2, "0")}s
+      </div>
+    );
+  }
 
   function SkeletonCards() {
     return (
@@ -123,8 +116,7 @@ function CountdownTimer({ expiryDate }) {
     );
   }
 
-
-    function sliderSettings() {
+  function sliderSettings() {
     const settings = {
       dots: true,
       infinite: true,
@@ -157,10 +149,8 @@ function CountdownTimer({ expiryDate }) {
     }
   }
 
-
-
   return (
-    <section id="section-items" className="no-bottom">
+    <section data-aos="fade-in" data-aos-duration="2000" id="section-items" className="no-bottom">
       <div className="container">
         <div className="row">
           <div className="col-lg-12">
@@ -175,15 +165,13 @@ function CountdownTimer({ expiryDate }) {
               {...sliderSettings()}
               className="newItems__Slider"
             >
-
               {loading
-              ? new Array(4).fill(0).map((_, index) => (
-                  <SkeletonCards key={index} />
-              ))
-              : newItemsData.map((items, index) =>
-                  dynamicRenderingOfNewItemsData(items, index),
-                )}
-
+                ? new Array(4)
+                    .fill(0)
+                    .map((_, index) => <SkeletonCards key={index} />)
+                : newItemsData.map((items, index) =>
+                    dynamicRenderingOfNewItemsData(items, index),
+                  )}
             </Slider>
           </div>
           <div className="button__container">
