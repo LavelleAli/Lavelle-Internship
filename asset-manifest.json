@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/Lavelle-Internship/static/css/main.0fcab34e.css",
-    "main.js": "/Lavelle-Internship/static/js/main.90fd2215.js",
+    "main.js": "/Lavelle-Internship/static/js/main.ae0f1659.js",
     "static/js/787.0979ab29.chunk.js": "/Lavelle-Internship/static/js/787.0979ab29.chunk.js",
     "static/media/icofont.woff": "/Lavelle-Internship/static/media/icofont.dad3accba068281878f1.woff",
     "static/media/icofont.woff2": "/Lavelle-Internship/static/media/icofont.9c33516aab48c61e3081.woff2",
@@ -29,11 +29,11 @@
     "static/media/slick.woff": "/Lavelle-Internship/static/media/slick.295183786cd8a1389865.woff",
     "static/media/ethereum.svg": "/Lavelle-Internship/static/media/ethereum.df265e367364f285053a1285ad8d418d.svg",
     "main.0fcab34e.css.map": "/Lavelle-Internship/static/css/main.0fcab34e.css.map",
-    "main.90fd2215.js.map": "/Lavelle-Internship/static/js/main.90fd2215.js.map",
+    "main.ae0f1659.js.map": "/Lavelle-Internship/static/js/main.ae0f1659.js.map",
     "787.0979ab29.chunk.js.map": "/Lavelle-Internship/static/js/787.0979ab29.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0fcab34e.css",
-    "static/js/main.90fd2215.js"
+    "static/js/main.ae0f1659.js"
   ]
 }
